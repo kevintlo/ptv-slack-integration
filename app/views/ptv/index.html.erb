@@ -1,0 +1,22 @@
+<div class="container" >
+	<h1>Integrations Dev Demo App</h1>
+        <p>This app integrates the PTV API and Slack API</p>
+	<div class="subcontainer">	
+		<h5>Select a name from the dropdown list and a Metro route.</h5>
+		<p>The user will receive alerts on Slack if disruptions on the specified route appear</p>	
+	 <%= form_tag("/disruptions", method: "get") do %>
+  	 <div class="form-group row">
+	   <%= label_tag(:name, "Name:", class: "col-sm-2 col-form-label") %>
+	  <div class="col-md-4">
+	   <%= select_tag(:name, options_for_select(["Barry", "Harry", "Wally", "Freddy" ]), prompt: "Select a name...", required: true,   class: "form-control")%>
+	  </div>
+	 </div>
+	 <div class="form-group row">
+	   <%= label_tag(:route, "Route:", class: "col-sm-2 col-form-label") %>
+	  <div class="col-md-4">
+           <%= select_tag(:route, options_for_select(PTV::ROUTES), required: true, prompt: "Select a route..." , class: "form-control")%>
+	  </div> 
+	 </div>
+  	 <%= submit_tag("Search", class: "btn btn-primary") %>
+<% end %>
+</div> <!-- /container -->
