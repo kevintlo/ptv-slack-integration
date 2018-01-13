@@ -10,11 +10,11 @@ class IntegrationQuery
   @ptv_route_id= options[:route_id]
   @slack_username= options[:username]
   
-  # replace devid and key placeholder with valid PTV API credentials
+  # PTV_API_DEVID and PTV_API_KEY expected to be assigned in secrets.yml
   @ptv = PTV::Query.new(devid: Rails.application.secrets.PTV_API_DEVID, key: Rails.application.secrets.PTV_API_KEY)
 
-  # replace token placeholder with valid Slack API token 
-  @slack = Slack::Web::Client.new(token: 'xoxp-xxxxxxxxxxxx-xxxxxxxxx-xxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxx')
+  # SLACK_API_TOKEN expected to be assigned in secrets.yml
+  @slack = Slack::Web::Client.new(token: Rails.application.secrets.SLACK_API_TOKEN)
  end
 
  def retreiveDisruptions

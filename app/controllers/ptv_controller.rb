@@ -5,7 +5,7 @@ class PtvController < ApplicationController
  end
 
  def disruptions
-  @query = IntegrationQuery.new(route_id: params[:route], username: params[:name])
-  @query.retreiveDisruptions
+  @query = IntegrationQuery.new(route_id: params[:route_id], username: params[:username])
+  # @query.retreiveDisruptions
  end
 end
