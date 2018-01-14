@@ -1,5 +1,11 @@
-<% params.each do |key,pair| %>
-<%= "#{key} : #{pair}" %><br>
-<% end %>
-##############<br>
-<%= @query.disruptions%>
+<div class="container">
+ <% params.each do |key,pair| %>
+ <%= "#{key} : #{pair}" %><br>
+ <% end %>
+ ##############<br>
+ <%= "There arre currently #{@disruptions_count} disruptions on your line"%>
+ <% @disruptions_title.each do |title| %>
+ <%= "#{title}\n" %>
+ <% end %>
+ <%= image_tag("train.gif", size: "300x225", alt: "Have a smooth journey")%>
+</div> <!-- /container>

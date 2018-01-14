@@ -133,6 +133,11 @@ module PTV
     @ptv_api_response = request(api_request_string)
     
     ActiveSupport::JSON.decode(ptv_api_response.body)["disruptions"]
+  
+    # To be added / improved
+    # -----
+    # (1) Check route ID for route type
+    # (2) return route type related disruptions array
   end
 
   def status_code
