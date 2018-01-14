@@ -15,6 +15,13 @@ class PtvController < ApplicationController
   @disruptions_title = []
   @query.disruptions["metro_train"].each do |disruption|
    @disruptions_title << disruption["title"]
-  end 
+  end
+
+  @query.postMessage(text: '')
+  rescue Slack::Web::Api::Errors::SlackError => error
+   if error.response.body.error == "user_not_found"
+    flash[:danger] = "Slack user #{params[:username]} does not exists in your workspace"
+   end
+    redirect_to root_url
  end
 end

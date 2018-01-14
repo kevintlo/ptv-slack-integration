@@ -15,6 +15,14 @@ class IntegrationQuery
 
   # SLACK_API_TOKEN expected to be assigned in secrets.yml
   @slack = Slack::Web::Client.new(token: Rails.application.secrets.SLACK_API_TOKEN)
+ 
+  # Do User-Check and raise SlackError if not existent in workspace
+  workspace_users = @slack.users_list.members
+  workspace_user = workspace_users.detect{|user| user.real_name == @slack_username}
+ 
+  if workspace_user.nil?
+   @slack.users_info(user: 'foo')
+  end
  end
 
  def retreiveDisruptions
