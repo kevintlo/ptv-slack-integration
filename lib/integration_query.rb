@@ -16,7 +16,7 @@ class IntegrationQuery
   # SLACK_API_TOKEN expected to be assigned in secrets.yml
   @slack = Slack::Web::Client.new(token: Rails.application.secrets.SLACK_API_TOKEN)
  
-  # Do User-Check and raise SlackError if not existent in workspace
+  # Do User-lookup and force-raise SlackError if not existent in workspace
   workspace_users = @slack.users_list.members
   workspace_user = workspace_users.detect{|user| user.real_name == @slack_username}
  
@@ -41,9 +41,33 @@ class IntegrationQuery
   end
  end
  
- @slack.chat_postMessage(channel: user_id, text: "#{@disruptions["metro_train"].count} disruptions on your line")   
- # To-Do: (1) Verify slack user
- # 	  (2) Retreive User ID
- # 	  (3) Post Notification with disruption text
+
+ # Extract Disruptions Count
+ @disruptions_count = @disruptions["metro_train"].count
+ 
+  
+ # part of the attachments array for the Slack notification
+ fields= []
+ attachments= Hash["fallback","Fallback Message"] 
+
+ # Save title for each appearing disruption in an array
+ @disruptions_title = []
+ @disruptions["metro_train"].each do |disruption|
+  @disruptions_title << disruption["title"]
+  fields << { "title":  disruption["title"] }
+ end 
+
+ # Construct Slack Notification
+ if @disruptions_count == 0
+  attachments["color"] = "good"
+  fields << { "title": "Hurray, no disruptions on your line!" }
+  attachments["fields"] = fields
+ elsif
+  attachments["color"] = "danger"
+  attachments["pretext"] = "There are currently #{@disruptions_count} disruptions reported on your Metro line:"
+  attachments["fields"] = fields
+ end
+ 
+ @slack.chat_postMessage(channel: user_id, attachments: [attachments].to_json )   
  end
 end

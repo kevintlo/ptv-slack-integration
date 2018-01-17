@@ -20,7 +20,7 @@ class PtvController < ApplicationController
   @query.postMessage(text: '')
   rescue Slack::Web::Api::Errors::SlackError => error
    if error.response.body.error == "user_not_found"
-    flash[:danger] = "Slack user #{params[:username]} does not exists in your workspace"
+    flash[:danger] = "Slack user #{params[:username]} does not exist in your workspace"
    end
     redirect_to root_url
  end
