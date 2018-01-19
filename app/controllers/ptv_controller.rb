@@ -1,4 +1,5 @@
-require 'ptv-api'
+#require 'ptv-api'
+require 'integration_query'
 
 class PtvController < ApplicationController
  def index
