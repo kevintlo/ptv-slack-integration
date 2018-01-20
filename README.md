@@ -1,13 +1,32 @@
 # API Integration Project for PTV / Slack
 
-A simple integration project to alert public transport users when their train line has disrupted service.
+A simple integration project to send a once-off alert to a selected Slack user informing them the current status of their selected Metro line. 
 
-Project includes:
+This has been realised by:
 
-* Extraction of route disruption information from Public Transport Victoria API
+* Writing a wrapper module for the PTV API and provide a basic set of methods. Accessible by including `ptv-api`
+* Utilizing the third party gem `slack-ruby-client` that provides a comprehensive wrapper for the Slack Web API
+* Both wrappers are encapsuled in the `IntegrationsQuery` class to provide simple methods for realizing this project
 
-* Information is being utilized to altert any person affected by the disruption by posting a Slack message to them
+A running version of the app can be found on [](https://damp-sea-30508.herokuapp.com/)
 
-# API Credentials
+## Target
 
-To successfully run the application a secrets.yml file needs to exist including your unique API credentials. The environment variables are being accessed through Rails.application.secrets.API_KEY 
+The targeted result was to make it possible creating following combination of Slack Users and Metro Lines for generating relevant alerts:
+![](screenshots/integrationsproject.png) 
+
+## API Credentials
+
+To run the application your unique PTV and Slack API credentials need to be provided in the `secrets.yml` file. The development and production environment are configured to utilize the encoded file `secrets.yml.enc` which is enabled by `bin/rails secrets:setup`. 
+
+API credentials to be added are: 
+
+```
+* PTV_API_DEVID
+* PTV_API_KEY
+* SLACK_API_TOKEN 
+```
+
+The environment variables are being retreived with `Rails.application.secrets` within the app.
+
+
