@@ -1,7 +1,7 @@
 require 'ptv-api'
 
 class IntegrationQuery
- attr_reader :disruptions 
+ attr_reader :disruptions, :slack_username 
  
  def initialize( options = {} )
   throw ArgumentError.new('Required argument :route_id missing') if options[:route_id].nil?
@@ -60,11 +60,11 @@ class IntegrationQuery
  # Construct Slack Notification
  if @disruptions_count == 0
   attachments["color"] = "good"
-  fields << { "title": "Hurray, no disruptions on your line!" }
+  fields << { "title": "Hurray, no disruptions on the #{PTV::ROUTES.key(@ptv_route_id.to_i)} line!" }
   attachments["fields"] = fields
  elsif
   attachments["color"] = "danger"
-  attachments["pretext"] = "There are currently #{@disruptions_count} disruptions reported on your Metro line:"
+  attachments["pretext"] = "#{@slack_username} we detected #{@disruptions_count} #{"disruption".pluralize(@disruptions_count)} on the #{PTV::ROUTES.key(@ptv_route_id.to_i)} line"
   attachments["fields"] = fields
  end
  

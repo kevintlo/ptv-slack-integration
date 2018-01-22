@@ -6,13 +6,14 @@ This has been realised by:
 
 * Writing a wrapper module for the PTV API and provide a basic set of methods. Accessible by including `ptv-api`
 * Utilizing the third party gem `slack-ruby-client` that provides a comprehensive wrapper for the Slack Web API
-* Both wrappers are encapsuled in the `IntegrationsQuery` class to provide simple methods for realizing this project
+* Both wrappers are encapsuled in the `IntegrationQuery` class to provide simple methods for realizing this project
 
 A running version of the app can be found on [](https://damp-sea-30508.herokuapp.com/)
 
 ## Target
 
 The targeted result was to make it possible creating following combination of Slack Users and Metro Lines for generating relevant alerts:
+
 ![](screenshots/integrationsproject.png) 
 
 ## API Credentials
@@ -22,11 +23,19 @@ To run the application your unique PTV and Slack API credentials need to be prov
 API credentials to be added are: 
 
 ```
-* PTV_API_DEVID
-* PTV_API_KEY
-* SLACK_API_TOKEN 
+PTV_API_DEVID
+PTV_API_KEY
+SLACK_API_TOKEN 
 ```
 
 The environment variables are being retreived with `Rails.application.secrets` within the app.
 
+## Slack Notifications
 
+User alert if no disruptions detected on selected Metro line.
+
+![](screenshots/no_disruptions_notification.png)
+
+User alert if more than one disruption has been detected on the selected Metro line.
+
+ ![](screenshots/disruptions_notification.png) 

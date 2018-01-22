@@ -1,8 +1,8 @@
 <div class="container">
 <% if @disruptions_count == 0 %>
-<h3>Hurray, there are currently no disruptions on your line! </h3>
+<h3>Hurray, there are currently no disruptions on the <%= PTV::ROUTES.key(params[:route_id].to_i) %> line! </h3>
 <% elsif %>
-<h3>Oh snap! There <%= "#{"is".pluralize(@disruptions_count)}"%> currently <%= "#{pluralize(@disruptions_count,'disruption')}" %> on your line </h3>
+<h3><%= "#{@query.slack_username}, #{pluralize(@disruptions_count,'disruption')}" %> detected on the <%= PTV::ROUTES.key(params[:route_id].to_i) %> line </h3>
 <div id="disruptionsCollapse" data-children=".item">
   <div class="disruptions">
     <a data-toggle="collapse" data-parent="#disruptionsCollapse" href="#disruptionsList" role="button">
