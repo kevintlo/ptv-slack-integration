@@ -16,11 +16,13 @@ class IntegrationQuery
   # SLACK_API_TOKEN expected to be assigned in secrets.yml
   @slack = Slack::Web::Client.new(token: Rails.application.secrets.SLACK_API_TOKEN)
  
-  # Do User-lookup and force-raise SlackError if not existent in workspace
+  # Do User-lookup on Slack Workspace  
   workspace_users = @slack.users_list.members
-  workspace_user = workspace_users.detect{|user| user.real_name == @slack_username}
- 
-  if workspace_user.nil?
+   
+  workspace_users.detect{|user| @slack_user_id = user.id if user.real_name == @slack_username  }
+  
+  # force-raise SlackError if User not existent in workspace
+  if @slack_user_id.nil?
    @slack.users_info(user: 'foo')
   end
  end
@@ -30,44 +32,7 @@ class IntegrationQuery
  end
  
  def postMessage(options = {})
- throw ArgumentError.new('Required argument :text missing') if options[:text].nil?
- 
- users_list = @slack.users_list
- user_id = ''
-
- users_list["members"].each do |member|
-  if member["real_name"] == @slack_username
-   user_id = member["id"]
-  end
- end
- 
-
- # Extract Disruptions Count
- @disruptions_count = @disruptions["metro_train"].count
- 
-  
- # part of the attachments array for the Slack notification
- fields= []
- attachments= Hash["fallback","Fallback Message"] 
-
- # Save title for each appearing disruption in an array
- @disruptions_title = []
- @disruptions["metro_train"].each do |disruption|
-  @disruptions_title << disruption["title"]
-  fields << { "title":  disruption["title"] }
- end 
-
- # Construct Slack Notification
- if @disruptions_count == 0
-  attachments["color"] = "good"
-  fields << { "title": "Hurray, no disruptions on the #{PTV::ROUTES.key(@ptv_route_id.to_i)} line!" }
-  attachments["fields"] = fields
- elsif
-  attachments["color"] = "danger"
-  attachments["pretext"] = "#{@slack_username} we detected #{@disruptions_count} #{"disruption".pluralize(@disruptions_count)} on the #{PTV::ROUTES.key(@ptv_route_id.to_i)} line"
-  attachments["fields"] = fields
- end
- 
- @slack.chat_postMessage(channel: user_id, attachments: [attachments].to_json )   
+ throw ArgumentError.new('Required argument :notification missing') if options[:notification].nil?  
+ @slack.chat_postMessage(channel: @slack_user_id, attachments: [options[:notification]].to_json) 
  end
 end

@@ -1,31 +1,24 @@
 module PtvHelper
- @digest = OpenSSL::Digest.new('sha1')
+ def assembleDisruptionAlert(disruptions_count, disruptions_title=[], route_id, username)
+   
+ # part of the attachments array for the Slack notification
+ fields= []
+ attachments= Hash["fallback","PTV Disruptions Alert"] 
 
+ # Save title for each appearing disruption in a hashed-array
+ disruptions_title.each{|disruption| fields << { "title":  disruption }}
 
- def ptv_signature(api_request)
-  OpenSSL::HMAC.hexdigest('sha1', PTV_KEY, api_request)
+ # Construct Slack Notification
+ if disruptions_count == 0
+  attachments["color"] = "good"
+  fields << { "title": "Hurray, no disruptions on the #{PTV::ROUTES.key(route_id.to_i)} line!" }
+  attachments["fields"] = fields
+ elsif
+  attachments["color"] = "danger"
+  attachments["pretext"] = "#{username} we detected #{disruptions_count} #{"disruption".pluralize(disruptions_count)} on the #{PTV::ROUTES.key(route_id.to_i)} line"
+  attachments["fields"] = fields
  end
-
- def ptv_query_string(api_name, query_parameter = nil)
-  request = "" 
-
-  if api_name == "disruptions"
-   request = "/v3/disruptions/route/#{query_parameter}"
-  end   
-
-  request += "?devid=#{PTV_DEVID}"
-  signature = ptv_signature(request)
   
-  api_query_string = "#{PTV_BASE_URL}#{request}&signature=#{signature}"
-
-  return api_query_string 
- end
-
- def ptv_api_request(api_name, query_parameter)
-  api_request = ptv_query_string(api_name, query_parameter)
-
-  response = Net::HTTP.get_response(URI(api_request))
-  
-  return response
+  attachments
  end
 end

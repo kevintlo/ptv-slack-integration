@@ -38,4 +38,4 @@ User alert if no disruptions detected on selected Metro line.
 
 User alert if more than one disruption has been detected on the selected Metro line.
 
- ![](screenshots/disruptions_notification.png) 
+![](screenshots/disruptions_notification.png) 

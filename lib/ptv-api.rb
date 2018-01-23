@@ -1,3 +1,11 @@
+# Error handling needs to be implemented for the whole module 
+# by evaluating HTTP Response Classes received from executing
+# Net::HTTP.get_response such as:
+#  - Net::HTTPSuccess
+#  - Net::HTTPServerError
+#
+# Also PTV API related error message handling to be considered.
+
 module PTV
  
   # Constant to list all PTV Lines. Prevent from modifications 
