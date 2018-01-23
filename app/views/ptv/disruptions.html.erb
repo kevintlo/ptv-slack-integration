@@ -1,29 +1,33 @@
 <div class="container">
-<% if @disruptions_count == 0 %>
-<h3>Hurray, there are currently no disruptions on the <%= PTV::ROUTES.key(params[:route_id].to_i) %> line! </h3>
-<% elsif %>
-<h3><%= "#{@query.slack_username}, #{pluralize(@disruptions_count,'disruption')}" %> detected on the <%= PTV::ROUTES.key(params[:route_id].to_i) %> line </h3>
-<div id="disruptionsCollapse" data-children=".item">
-  <div class="disruptions">
+ <% if @disruptions_count == 0 %>
+  <h3>Hurray, there are currently no disruptions on the <%= PTV::ROUTES.key(params[:route_id].to_i) %> line! </h3>
+ <% elsif %>
+  <h3><%= "#{@query.slack_username}, #{pluralize(@disruptions_count,'disruption')}" %> detected on the <%= PTV::ROUTES.key(params[:route_id].to_i) %> line </h3>
+  <div id="disruptionsCollapse" data-children=".item">
+   <div class="disruptions">
     <a data-toggle="collapse" data-parent="#disruptionsCollapse" href="#disruptionsList" role="button">
       Show disruptions
     </a>
     <div id="disruptionsList" class="collapse" role="tabpanel">
       <p class="mb-3">
- <% @disruptions_title.each do |title| %>
- <ul>
-<li><%= "#{title}" %></li>
-</ul>
- <% end %>
+       <% @disruptions_title.each do |title| %>
+        <ul>
+         <li><%= "#{title}" %></li>
+        </ul>
+       <% end %>
       </p>
-    </div>
+    </div> <!-- /disruptionsList-->
+   </div> <!-- /disruptions-->
+  </div> <!-- /disruptionsCollapse -->
+ <% end %>
+ <% if @disruptions_count == 0 %>
+  <%= image_tag("train.gif", size: "300x225", alt: "Have a smooth journey", class: "img-fluid")%>
+ <% elsif %>
+  <%= image_tag("disruption_train.gif", size: "300x225", alt: "Oh snap!", class: "img-fluid")%>
+  <% end %>
+ <div class="row">
+  <div class="col-sm">  
+   <%= link_to "Back to Main Page", root_url %>
   </div>
-</div>
-<% end %>
-<% if @disruptions_count == 0 %>
- <%= image_tag("train.gif", size: "300x225", alt: "Have a smooth journey")%>
-<% elsif %>
- <%= image_tag("disruption_train.gif", size: "300x225", alt: "Oh snap!")%>
-<% end %>
-<%= link_to "Back to Main Page", root_url %>
-</div> <!-- /container>
+ </div>
+</div> <!-- /container -->
