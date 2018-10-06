@@ -1,0 +1,14 @@
+[Unit]
+Description=PTV Integration App
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/ptv-slack-integration/
+ExecStart=/bin/bash -lc 'bundle exec rails server -b ec2-54-206-104-17.ap-southeast-2.compute.amazonaws.com -p 8080'
+TimeoutSec=30
+RestartSec=15s
+Restart=always
+
+
