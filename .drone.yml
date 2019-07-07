@@ -1,0 +1,8 @@
+kind: pipeline
+name: build-test
+
+steps:
+- name: test
+  image: ubuntu:latest
+  commands:
+  - printenv
